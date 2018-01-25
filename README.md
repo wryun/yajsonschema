@@ -9,22 +9,22 @@ documents.
 
 ## Example
 
-  ---
-  name: !type {
-    type: string,
-    minLength: 1
-  }
-  ---
-  fileType: !enum [json, yaml]
-  organisation: !type string
-  evil?: !type bool
-  people:
-  - name: !ref name
-    age: !type {
-      type: int,
-      min: 0
+    ---
+    name: !type {
+      type: string,
+      minLength: 1
     }
-    -: false # definition of additional properties
+    ---
+    fileType: !enum [json, yaml]
+    organisation: !type string
+    evil?: !type bool
+    people:
+    - name: !ref name
+      age: !type {
+        type: int,
+        min: 0
+      }
+      -: false # definition of additional properties
 
 Things you may notice here:
 
