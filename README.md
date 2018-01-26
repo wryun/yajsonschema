@@ -3,6 +3,8 @@ it to be useable**
 
 # yajsonschema
 
+[![Build Status](https://travis-ci.org/wryun/yajsonschema.svg?branch=master)](https://travis-ci.org/wryun/yajsonschema)
+
 yajsonschema (yet another json schema [something]) is a tool which converts
 a schema written in yaml into a JSON schema (draft 4). i.e. it's primarily
 an easier way to write json schemas, but you can also use it directly.
