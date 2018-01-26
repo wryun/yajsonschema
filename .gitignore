@@ -10,3 +10,6 @@ yajsonschema
 
 # dependencies (go dep)
 vendor
+
+# ide etc.
+.vscode
