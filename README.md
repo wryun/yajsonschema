@@ -1,3 +1,6 @@
+**not ready yet - need to add custom tag support mentioned below for
+it to be useable**
+
 # yajsonschema
 
 yajsonschema (yet another json schema [something]) is a tool which converts

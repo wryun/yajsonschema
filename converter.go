@@ -3,6 +3,7 @@ package yajsonschema
 import (
 	"errors"
 	"io"
+	"sort"
 	"strings"
 
 	// go-yaml doesn't have custom tag support yet... grabbing random fork.
@@ -11,22 +12,16 @@ import (
 	"github.com/go-yaml/yaml"
 )
 
-// JSONSchema is a json schema represented as Go types.
-// If using gojsonschema, this can be used with NewGoLoader, or
-// can be output using json.Marshal.
-type JSONSchema map[string]interface{}
-type jsonType string
-
 const (
 	optionalSigil = "?"
 
-	objectType = jsonType("object")
-	arrayType  = jsonType("array")
+	objectType = "object"
+	arrayType  = "array"
 )
 
 // Convert processes either 1 or 2 yajsonschema documents accessible via io.Reader,
 // and outputs a json schema.
-func Convert(yamlSchemaReader io.Reader) (JSONSchema, error) {
+func Convert(yamlSchemaReader io.Reader) (map[string]interface{}, error) {
 	yamlDefinitions, yamlSchema, err := unmarshal(yamlSchemaReader)
 	if err != nil {
 		return nil, err
@@ -91,10 +86,10 @@ func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 	return definitions, schema, nil
 }
 
-func buildFragment(yamlSchema interface{}) (JSONSchema, error) {
+func buildFragment(yamlSchema interface{}) (map[string]interface{}, error) {
 	switch val := yamlSchema.(type) {
 	default:
-		return JSONSchema(map[string]interface{}{
+		return map[string]interface{}(map[string]interface{}{
 			"enum": []interface{}{val}, // draft 04 doesn't support const
 		}), nil
 	case []interface{}:
@@ -104,9 +99,9 @@ func buildFragment(yamlSchema interface{}) (JSONSchema, error) {
 	}
 }
 
-func buildArraySchema(arr []interface{}) (JSONSchema, error) {
+func buildArraySchema(arr []interface{}) (map[string]interface{}, error) {
 	var err error
-	schema := JSONSchema(map[string]interface{}{
+	schema := map[string]interface{}(map[string]interface{}{
 		"type": arrayType,
 	})
 
@@ -135,11 +130,11 @@ func buildArraySchema(arr []interface{}) (JSONSchema, error) {
 	return schema, nil
 }
 
-func buildObjectSchema(obj map[interface{}]interface{}) (JSONSchema, error) {
+func buildObjectSchema(obj map[interface{}]interface{}) (map[string]interface{}, error) {
 	var err error
 	var properties map[string]interface{}
 	var required []string
-	schema := JSONSchema(map[string]interface{}{
+	schema := map[string]interface{}(map[string]interface{}{
 		"type": objectType,
 	})
 
@@ -179,6 +174,8 @@ func buildObjectSchema(obj map[interface{}]interface{}) (JSONSchema, error) {
 	}
 
 	if required != nil {
+		// So it's stable. Mostly for testing.
+		sort.Strings(required)
 		schema["required"] = required
 	}
 

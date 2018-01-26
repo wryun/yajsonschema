@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "properties": {
+    "boolean": {
+      "enum": [
+        true
+      ]
+    },
+    "nil": {
+      "enum": [
+        null
+      ]
+    },
+    "number": {
+      "enum": [
+        1
+      ]
+    },
+    "string": {
+      "enum": [
+        "s"
+      ]
+    }
+  },
+  "required": [
+    "boolean",
+    "nil",
+    "number",
+    "string"
+  ],
+  "type": "object"
+}
