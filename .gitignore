@@ -17,6 +17,5 @@ vendor
 
 # ruby/jekyll/gh-pages
 .bundle
-Gemfile
 Gemfile.lock
 _site
