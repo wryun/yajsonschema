@@ -56,7 +56,7 @@ func Convert(yamlSchemaReader io.Reader) (map[string]interface{}, error) {
 
 func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 	dec := yaml.NewDecoder(yamlSchema)
-	dec.RegisterCustomTagUnmarshaller("!enum", &CustomTagUnmarshaler{
+	dec.RegisterCustomTagUnmarshaller("!enum", &customTagUnmarshaler{
 		func(unmarshalYaml func(interface{}) error) (interface{}, error) {
 			enum := enumTag{}
 			if err := unmarshalYaml(&enum.Contents); err != nil {
@@ -66,7 +66,7 @@ func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 			return enum, nil
 		},
 	})
-	dec.RegisterCustomTagUnmarshaller("!ref", &CustomTagUnmarshaler{
+	dec.RegisterCustomTagUnmarshaller("!ref", &customTagUnmarshaler{
 		func(unmarshalYaml func(interface{}) error) (interface{}, error) {
 			ref := refTag{}
 			if err := unmarshalYaml(&ref.Contents); err != nil {
@@ -76,7 +76,7 @@ func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 			return ref, nil
 		},
 	})
-	dec.RegisterCustomTagUnmarshaller("!type", &CustomTagUnmarshaler{
+	dec.RegisterCustomTagUnmarshaller("!type", &customTagUnmarshaler{
 		func(unmarshalYaml func(interface{}) error) (interface{}, error) {
 			t := typeTag{}
 			if err := unmarshalYaml(&t.Contents); err != nil {
@@ -116,11 +116,11 @@ func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 	return definitions, schema, nil
 }
 
-type CustomTagUnmarshaler struct {
+type customTagUnmarshaler struct {
 	doit func(func(interface{}) error) (interface{}, error)
 }
 
-func (ctu *CustomTagUnmarshaler) UnmarshalYAML(yamlUnmarshal func(interface{}) error) (interface{}, error) {
+func (ctu *customTagUnmarshaler) UnmarshalYAML(yamlUnmarshal func(interface{}) error) (interface{}, error) {
 	return ctu.doit(yamlUnmarshal)
 }
 

@@ -24,9 +24,10 @@ func TestAllCorrectSchemas(t *testing.T) {
 	for _, inputFileName := range matches {
 		testName := strings.TrimSuffix(inputFileName, ".yaml")
 		outputFileName := testName + ".json"
+		inputFileName := inputFileName
 
 		t.Run(testName, func(t *testing.T) {
-			//t.Parallel()
+			t.Parallel()
 			testSchema(t, inputFileName, outputFileName)
 		})
 	}

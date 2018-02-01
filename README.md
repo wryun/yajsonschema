@@ -59,17 +59,18 @@ If only one document is defined, we assume there are no definitions.
 
 ## Using as a library
 
-See usage in `cmd/yajsonschema.go`
+See usage in `cmd/yajsonschema.go` and
+[API documentation on godoc](https://godoc.org/github.com/wryun/yajsonschema)
 
 ## Using as a CLI tool
 
 To generate the json schema (on stdout):
 
-  yajsonschema -s schema.yaml
+    yajsonschema -s schema.yaml
 
 To validate json documents immediately:
 
-  yajsonschema -s schema.yaml myinput.json myinput2.json
+    yajsonschema -s schema.yaml myinput.json myinput2.json
 
 (error code of 2 indicates failure to validate; output on stderr)
 
