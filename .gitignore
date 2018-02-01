@@ -14,3 +14,9 @@ vendor
 
 # ide etc.
 .vscode
+
+# ruby/jekyll/gh-pages
+.bundle
+Gemfile
+Gemfile.lock
+_site
