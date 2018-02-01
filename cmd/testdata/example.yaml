@@ -1,0 +1,17 @@
+---
+name: !type {
+  type: string,
+  minLength: 1
+}
+---
+fileType: !enum [json, yaml]
+organisation: !ref name
+evil?: !type boolean
+people:
+- name: !ref name
+  age: !type {
+    type: integer,
+    min: 0
+  }
+  -: false # definition of additional properties
+- funkiness: true

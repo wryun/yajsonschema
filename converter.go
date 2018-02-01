@@ -8,8 +8,7 @@ import (
 
 	// go-yaml doesn't have custom tag support yet... grabbing random fork.
 	// see: https://github.com/go-yaml/yaml/issues/191
-
-	"github.com/go-yaml/yaml"
+	"github.com/wryun/yaml"
 )
 
 const (
@@ -57,6 +56,37 @@ func Convert(yamlSchemaReader io.Reader) (map[string]interface{}, error) {
 
 func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 	dec := yaml.NewDecoder(yamlSchema)
+	dec.RegisterCustomTagUnmarshaller("!enum", &CustomTagUnmarshaler{
+		func(unmarshalYaml func(interface{}) error) (interface{}, error) {
+			enum := enumTag{}
+			if err := unmarshalYaml(&enum.Contents); err != nil {
+				return nil, err
+			}
+
+			return enum, nil
+		},
+	})
+	dec.RegisterCustomTagUnmarshaller("!ref", &CustomTagUnmarshaler{
+		func(unmarshalYaml func(interface{}) error) (interface{}, error) {
+			ref := refTag{}
+			if err := unmarshalYaml(&ref.Contents); err != nil {
+				return nil, err
+			}
+
+			return ref, nil
+		},
+	})
+	dec.RegisterCustomTagUnmarshaller("!type", &CustomTagUnmarshaler{
+		func(unmarshalYaml func(interface{}) error) (interface{}, error) {
+			t := typeTag{}
+			if err := unmarshalYaml(&t.Contents); err != nil {
+				return nil, err
+			}
+
+			return t, nil
+		},
+	})
+
 	documents := []interface{}{}
 	for {
 		var document interface{}
@@ -86,6 +116,24 @@ func unmarshal(yamlSchema io.Reader) (interface{}, interface{}, error) {
 	return definitions, schema, nil
 }
 
+type CustomTagUnmarshaler struct {
+	doit func(func(interface{}) error) (interface{}, error)
+}
+
+func (ctu *CustomTagUnmarshaler) UnmarshalYAML(yamlUnmarshal func(interface{}) error) (interface{}, error) {
+	return ctu.doit(yamlUnmarshal)
+}
+
+type enumTag struct {
+	Contents []interface{}
+}
+type typeTag struct {
+	Contents interface{}
+}
+type refTag struct {
+	Contents string
+}
+
 func buildFragment(yamlSchema interface{}) (map[string]interface{}, error) {
 	switch val := yamlSchema.(type) {
 	default:
@@ -96,6 +144,29 @@ func buildFragment(yamlSchema interface{}) (map[string]interface{}, error) {
 		return buildArraySchema(val)
 	case map[interface{}]interface{}:
 		return buildObjectSchema(val)
+	case enumTag:
+		return map[string]interface{}(map[string]interface{}{
+			"enum": val.Contents,
+		}), nil
+	case typeTag:
+		switch typeContents := val.Contents.(type) {
+		case map[interface{}]interface{}:
+			result := make(map[string]interface{}, len(typeContents))
+			for k, v := range typeContents {
+				result[k.(string)] = v
+			}
+			return result, nil
+		case string:
+			return map[string]interface{}{
+				"type": typeContents,
+			}, nil
+		default:
+			return nil, nil
+		}
+	case refTag:
+		return map[string]interface{}{
+			"$ref": "#/definitions/" + val.Contents,
+		}, nil
 	}
 }
 

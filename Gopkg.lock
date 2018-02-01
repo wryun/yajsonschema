@@ -4,36 +4,36 @@
 [[projects]]
   name = "github.com/go-test/deep"
   packages = ["."]
-  revision = "9898238679c264cfb10411539f14a0553dc8b295"
-  version = "v1.0.0"
+  revision = "6592d9cc0a499ad2d5f574fde80a2b5c5cc3b4f5"
+  version = "v1.0.1"
 
 [[projects]]
-  branch = "devel"
-  name = "github.com/go-yaml/yaml"
+  branch = "custom-tags-2"
+  name = "github.com/wryun/yaml"
   packages = ["."]
-  revision = "a64b8214730256be97296f5ff52587aa78769445"
+  revision = "6fae00f666ca4d3cf57fc0ca975ab4fd4b076a18"
 
 [[projects]]
   branch = "master"
   name = "github.com/xeipuuv/gojsonpointer"
   packages = ["."]
-  revision = "6fe8760cad3569743d51ddbb243b26f8456742dc"
+  revision = "4e3ac2762d5f479393488629ee9370b50873b3a6"
 
 [[projects]]
   branch = "master"
   name = "github.com/xeipuuv/gojsonreference"
   packages = ["."]
-  revision = "e02fc20de94c78484cd5ffb007f8af96be030a45"
+  revision = "bd5ef7bd5415a7ac448318e64f11a24cd21e594b"
 
 [[projects]]
   branch = "master"
   name = "github.com/xeipuuv/gojsonschema"
   packages = ["."]
-  revision = "511d08a359d14c0dd9c4302af52ee9abb6f93c2a"
+  revision = "70e59348c29403c606624cd201e79769d6657db8"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c93ff3db8f57d9878ded91b649f5cdde465bf02080ef8ac1dc2f76946caf97cc"
+  inputs-digest = "714b08e24ccc931673afc3f37e883b94ab34662f54961780a01cfc6bbec418fb"
   solver-name = "gps-cdcl"
   solver-version = 1

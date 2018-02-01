@@ -1,0 +1,18 @@
+{
+  "fileType": "json",
+  "organisation": "foo",
+  "people": [
+    {
+      "name": "Mildred",
+      "age": 23
+    },
+    {
+      "name": "Ethelbert",
+      "age": 34
+    },
+    {
+      "fakeName": "Calliope",
+      "funkiness": true
+    }
+  ]
+}

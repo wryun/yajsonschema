@@ -1,16 +1,14 @@
-**not ready yet - need to add custom tag support mentioned below for
-it to be useable**
-
 # yajsonschema
 
 [![Build Status](https://travis-ci.org/wryun/yajsonschema.svg?branch=master)](https://travis-ci.org/wryun/yajsonschema)
 
 yajsonschema (yet another json schema [something]) is a tool which converts
-a schema written in yaml into a JSON schema (draft 4). i.e. it's primarily
-an easier way to write json schemas, but you can also use it directly.
+a schema written in the yaml format defined here into a JSON schema (draft 4).
+i.e. it's primarily an easier way to write json schemas, but you can also use
+it directly as a validator.
 
-However, you can only represent a subset of possible json schema
-documents.
+**WARNING: this is largely 'proof-of-concept' at the moment and hasn't been
+used beyond the test-cases**
 
 ## Example
 
@@ -21,15 +19,16 @@ documents.
     }
     ---
     fileType: !enum [json, yaml]
-    organisation: !type string
-    evil?: !type bool
+    organisation: !ref name
+    evil?: !type boolean
     people:
     - name: !ref name
       age: !type {
-        type: int,
+        type: integer,
         min: 0
       }
-      -: false # definition of additional properties
+      -: false # definition of additionalProperties field
+    - funkiness: true
 
 Things you may notice here:
 
@@ -40,20 +39,21 @@ Things you may notice here:
  - normal json schemas default to non-required. Instead we default to
    required (using '?' to represent optional).
  - ways to break out of 'this should match itself':
-   - an array indicates that items should match one of the items
+   - an array indicates that items should match any of the items
      in the array (i.e. anyOf), not that it should be an exact match
+     to all the items as in json schema
    - !ref myname is shorthand for {"$ref": "#/definitions/myname"}
    - !type (object) = standard type definition
      - this is a useful way to 'break out' into standard json schema.
-       You can use definition references to jump back to yajsonschema.
+       You can use definition references to jump back to yajsonschema
+       syntax.
    - !type int = type definition where the type is set to int
      and no other validation is applied
    - !enum [arr] gives you a list of possibilities for this value
-   - for objects, we understand '?' at the end of fields to indicate
-     that it's an optional field, and '-' to be the 'additionalProperties'
-     field in the schema (with special handling for true/false so that
-     they're passed through with their semantic meaning rather than
-     intepreted as an enum/const).
+   - for objects, '?' at the end of fields indicates that it's an optional
+     field, and '-' is the 'additionalProperties' field in the schema
+     (with special handling for true/false so that they're passed through
+     with their semantic meaning rather than intepreted as an enum/const).
 
 If only one document is defined, we assume there are no definitions.
 
@@ -69,7 +69,7 @@ To generate the json schema (on stdout):
 
 To validate json documents immediately:
 
-  yajsonschema -s schema.yaml myinput.yaml myinput.json
+  yajsonschema -s schema.yaml myinput.json myinput2.json
 
 (error code of 2 indicates failure to validate; output on stderr)
 
@@ -77,4 +77,6 @@ To validate json documents immediately:
 
 There's a bunch other validators and 'json schema generators'.
 I don't know of any others that rely on yaml custom types like this,
-or have the rough principle of self-validation.
+or are inspired explicitly by the idea of being as close as possible
+to the input (i.e. such that one can almost use input as a
+validation schema).

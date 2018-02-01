@@ -1,6 +1,6 @@
 [[constraint]]
-  name = "github.com/go-yaml/yaml"
-  branch = "devel"
+  name = "github.com/wryun/yaml"
+  branch = "custom-tags-2"
 
 # Gopkg.toml example
 #

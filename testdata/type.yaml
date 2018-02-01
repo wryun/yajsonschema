@@ -1,0 +1,5 @@
+type: !type b
+type2: !type {
+  "type": "string",
+  "minLength": 5
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "properties": {
+    "main": {
+      "items": {
+        "anyOf": [
+          {
+            "properties": {
+              "a": {
+                "enum": [
+                  true
+                ]
+              }
+            },
+            "required": [
+              "a"
+            ],
+            "type": "object"
+          },
+          {
+            "properties": {
+              "b": {
+                "enum": [
+                  true
+                ]
+              }
+            },
+            "required": [
+              "b"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "main"
+  ],
+  "type": "object"
+}

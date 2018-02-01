@@ -26,7 +26,7 @@ func TestAllCorrectSchemas(t *testing.T) {
 		outputFileName := testName + ".json"
 
 		t.Run(testName, func(t *testing.T) {
-			t.Parallel()
+			//t.Parallel()
 			testSchema(t, inputFileName, outputFileName)
 		})
 	}
