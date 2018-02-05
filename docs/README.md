@@ -86,6 +86,7 @@ example input appropriately).
 
 ## TODO
 
+- clean up API docs (include examples etc.)
 - upstream a better version of custom tag support to go-yaml
 - package javascript as npm package
 - use a js schema validator rather than the Go one on website
