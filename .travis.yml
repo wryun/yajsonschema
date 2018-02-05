@@ -14,3 +14,8 @@ before_install:
 
 install:
   - dep ensure
+
+# we don't want to test the 'js' directory at the moment
+# (gopherjs can't be vendored by dep, and, well, doesn't make much sense anyway)
+script:
+  - go test -v .
